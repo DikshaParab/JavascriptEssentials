@@ -4,8 +4,13 @@ let selectedCards = [];
 let score = 0;
 let timeLeft = 30;
 let gameInterval;
+let isPaused = false;
+let gameStarted = false;
 
 const startbtn = document.getElementById('startbtn');
+const restartbtn = document.getElementById('restartbtn');
+const pausebtn = document.getElementById('pausebtn');
+const stopbtn = document.getElementById('stopbtn');
 const gameContainer = document.getElementById('game-container');
 const scoreElement = document.getElementById('score');
 const timerElement = document.getElementById('timer');
@@ -29,6 +34,9 @@ function shuffle(array) {
 }
 
 function handleCardClick(event) {
+    if (isPaused || !gameStarted) {
+        return;
+    }
     const card = event.target;
     if (!card.classList.contains('card') || card.classList.contains('matched')) {
         return;
@@ -58,31 +66,71 @@ function checkMatch() {
 }
 
 function startGame() {
-    let timeLeft = 30;
-    startbtn.disabled = true;
-    score = 0; // Reset score to zero
+    score = 0;
+    timeLeft = 30;
+    isPaused = false;
+    gameStarted = true;
     scoreElement.textContent = `Score: ${score}`;
-    startGameTimer(timeLeft);
     cards = shuffle(colors.concat(colors));
     selectedCards = [];
     gameContainer.innerHTML = '';
     generateCards();
     gameContainer.addEventListener('click', handleCardClick);
+    startTimer();
+    startbtn.disabled = true;
 }
 
-function startGameTimer(timeLeft) {
-    timerElement.textContent = `Time Left: ${timeLeft}`;
+function startTimer() {
+    clearInterval(gameInterval);
     gameInterval = setInterval(() => {
-        timeLeft--;
-        timerElement.textContent = `Time Left: ${timeLeft}`;
-
-        if (timeLeft === 0) {
-            clearInterval(gameInterval);
-            let timeLeft = 30;
-            alert('Game Over!');
-            startbtn.disabled = false;
+        if (!isPaused) {
+            timeLeft--;
+            timerElement.textContent = `Time Left: ${timeLeft}`;
+            if (timeLeft === 0) {
+                clearInterval(gameInterval);
+                alert("Game Over!");
+                gameStarted = false;
+                startbtn.disabled = false;
+            }
         }
-    }, 1000);
+    },1000);
+}
+
+function stopGame(){
+    clearInterval(gameInterval);
+    gameStarted = false;
+    isPaused = false;
+    score = 0;
+    timeLeft = 30;
+    scoreElement.textContent = `Score: ${score}`;
+    timerElement.textContent = `Time Left: ${timeLeft}`;
+    gameContainer.innerHTML = "";
+    startbtn.disabled = false;
+    pausebtn.textContent = "Pause";
+}
+
+function restartGame() {
+    clearInterval(gameInterval);
+    startGame();
+}
+
+function pauseGame(){
+    if(!gameStarted){
+        return;
+    }
+    isPaused = !isPaused;
+
+    if(isPaused){
+        pausebtn.textContent = "Resume";
+    }
+    else{
+        pausebtn.textContent = "Pause";
+    }
 }
 
 startbtn.addEventListener('click', startGame);
+restartbtn.addEventListener('click', restartGame);
+pausebtn.addEventListener('click', pauseGame);
+stopbtn.addEventListener('click', stopGame);
+
+gameContainer.addEventListener('click', handleCardClick);

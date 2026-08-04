@@ -23,6 +23,21 @@ body {
     flex-direction: column;
 }
 
+.startMain button {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: white;
+    color: #3498db;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.startMain button:hover {
+    transform: scale(1.05);
+}
+
 h1 {
     color: #fff;
     text-align: center;
@@ -73,4 +88,14 @@ h1 {
     color: #3498db;
     border: none;
     font-weight: 900;
+}
+
+#stopbtn {
+    padding: 10px 20px;
+    background-color: white;
+    color: red;
+    border: none;
+    font-weight: 900;
+    margin-top: 10px;
+    cursor: pointer;
 }
