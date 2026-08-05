@@ -23,7 +23,6 @@ This repository covers essential JavaScript topics including:
 * JSON
 * Asynchronous JavaScript
 * API Integration
-* Final JavaScript Project
 
 ---
 
