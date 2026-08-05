@@ -138,5 +138,3 @@ cd JavascriptEssentials
 * Visual Studio Code (recommended)
 
 ---
-
-If you found this repository helpful, consider giving it a ⭐ to support my work and future projects.
